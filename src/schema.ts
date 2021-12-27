@@ -2,7 +2,7 @@ import { gql } from 'apollo-server';
 
 const typeDefs = gql`
   type Query {
-    hello: String!
+    posts: [Post!]
   }
 
   type Post {
@@ -15,10 +15,16 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    postCreate(input: postCreateInput): PostPayload!
+    postCreate(input: PostCreateInput): PostPayload!
+    postUpdate(id: Int, input: PostUpdateInput): PostPayload!
   }
 
-  input postCreateInput {
+  input PostCreateInput {
+    title: String!
+    content: String!
+  }
+
+  input PostUpdateInput {
     title: String!
     content: String!
   }

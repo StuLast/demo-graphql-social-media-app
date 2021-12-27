@@ -41,6 +41,8 @@ const postCreate = async (
         message: 'Must contain a valid post title',
       });
 
+  //Implement user Id check to confirm user exists
+
   if (!hasContent || !hasTitle) {
     return postPayload;
   }
