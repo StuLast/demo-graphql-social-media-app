@@ -1,10 +1,18 @@
-import { Post } from '@prisma/client';
+import { Post, Prisma } from '@prisma/client';
 import { TContext } from '../index';
 
 interface TPostCreateArgs {
   input: {
     title: string;
     content: string;
+  };
+}
+
+interface TPostUpdateArgs {
+  id: string;
+  input: {
+    title?: string;
+    content?: string;
   };
 }
 
@@ -62,8 +70,65 @@ const postCreate = async (
   return postPayload;
 };
 
+const postUpdate = async (
+  _: any,
+  { id, input }: TPostUpdateArgs,
+  { prisma }: TContext
+): Promise<TPostPayload> => {
+  const { title, content } = input;
+
+  const postPayload: TPostPayload = {
+    userErrors: [],
+    post: null,
+  };
+
+  if (!title && !content) {
+    postPayload.userErrors.push({
+      message: 'Request should have either title, content or both',
+    });
+    return postPayload;
+  }
+
+  const updateable = await prisma.post.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+
+  if (!updateable) {
+    postPayload.userErrors.push({
+      message: 'Request needs valid post id',
+    });
+    return postPayload;
+  }
+
+  const updates: TPostUpdateArgs['input'] = {};
+
+  if (title) {
+    updates.title = title;
+  }
+
+  if (content) {
+    updates.content = content;
+  }
+
+  const updatedPost = await prisma.post.update({
+    data: {
+      ...updates,
+    },
+    where: {
+      id: Number(id),
+    },
+  });
+
+  postPayload.post = updatedPost;
+
+  return postPayload;
+};
+
 const Mutation = {
   postCreate,
+  postUpdate,
 };
 
 export { Mutation };
