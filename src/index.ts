@@ -4,6 +4,7 @@ import typeDefs from './schema';
 import { Query, Mutation } from './resolvers';
 
 const prisma = new PrismaClient();
+
 export interface TContext {
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,

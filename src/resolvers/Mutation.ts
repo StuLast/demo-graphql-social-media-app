@@ -1,3 +1,4 @@
+import { Post } from '@prisma/client';
 import { TContext } from '../index';
 
 interface TPostCreateArgs {
@@ -7,29 +8,60 @@ interface TPostCreateArgs {
   };
 }
 
-const Mutation = {
-  postCreate: async (
-    _: any,
-    { input }: TPostCreateArgs,
-    { prisma }: TContext
-  ) => {
-    const { title, content } = input;
-    try {
-      const post = await prisma.post.create({
-        data: {
-          title,
-          content,
-          authorId: 1,
-        },
+interface TPostPayload {
+  userErrors: {
+    message: string;
+  }[];
+  post: Post | null;
+}
+
+const postCreate = async (
+  _: any,
+  { input }: TPostCreateArgs,
+  { prisma }: TContext
+): Promise<TPostPayload> => {
+  const { title, content } = input;
+  const postPayload: TPostPayload = {
+    userErrors: [],
+    post: null,
+  };
+
+  let hasContent = false;
+  let hasTitle = false;
+
+  content.length > 0
+    ? (hasContent = true)
+    : postPayload.userErrors.push({
+        message: 'Must contain valid post content',
       });
-      return {
-        userErrors: [],
-        post,
-      };
-    } catch (err) {
-      return { userErrors: err };
-    }
-  },
+
+  title.length > 0
+    ? (hasTitle = true)
+    : postPayload.userErrors.push({
+        message: 'Must contain a valid post title',
+      });
+
+  if (!hasContent || !hasTitle) {
+    return postPayload;
+  }
+
+  try {
+    const post = await prisma.post.create({
+      data: {
+        title,
+        content,
+        authorId: 1,
+      },
+    });
+    postPayload.post = post;
+  } catch (err: any) {
+    postPayload.userErrors.push(err.message);
+  }
+  return postPayload;
+};
+
+const Mutation = {
+  postCreate,
 };
 
 export { Mutation };
