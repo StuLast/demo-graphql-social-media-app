@@ -1,5 +1,5 @@
-import { Post, Prisma } from '@prisma/client';
-import { TContext } from '../index';
+import { Post } from '@prisma/client';
+import { TContext } from '../../index';
 
 interface TPostCreateArgs {
   input: {
@@ -126,9 +126,36 @@ const postUpdate = async (
   return postPayload;
 };
 
-const Mutation = {
-  postCreate,
-  postUpdate,
+const postDelete = async (
+  _: any,
+  { id }: TPostUpdateArgs,
+  { prisma }: TContext
+): Promise<TPostPayload> => {
+  const postPayload: TPostPayload = {
+    userErrors: [],
+    post: null,
+  };
+
+  const isDeletable = await prisma.post.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+
+  if (!isDeletable) {
+    postPayload.userErrors.push({ message: 'Unable to locate post id' });
+    return postPayload;
+  }
+
+  const deletedPost = await prisma.post.delete({
+    where: {
+      id: Number(id),
+    },
+  });
+
+  postPayload.post = deletedPost;
+
+  return postPayload;
 };
 
-export { Mutation };
+export const postResolvers = { postCreate, postUpdate, postDelete };

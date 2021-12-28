@@ -6,12 +6,13 @@
   "author": "Stu Last <stuart@spycedconcepts.uk>",
   "license": "ISC",
   "scripts": {
-    "dev": "nodemon ./src/index.ts",
+    "dev": "dotenv -e .env nodemon ./src/index.ts",
     "build": "tsc ./src/index.ts"
   },
   "dependencies": {
     "@prisma/client": "3.7.0",
     "apollo-server": "^3.5.0",
+    "dotenv-cli": "^4.1.1",
     "graphql": "^16.2.0",
     "prisma": "^3.7.0",
     "uuid": "^8.3.2"

@@ -17,6 +17,8 @@ const typeDefs = gql`
   type Mutation {
     postCreate(input: PostInput!): PostPayload!
     postUpdate(id: Int!, input: PostInput!): PostPayload!
+    postDelete(id: Int!): PostPayload!
+    signup(input: UserInput!): UserPayload!
   }
 
   input PostInput {
@@ -35,6 +37,28 @@ const typeDefs = gql`
     email: String!
     profile: Profile
     posts: [Post!]!
+  }
+
+  type UserData {
+    id: ID!
+    name: String!
+    email: String!
+  }
+
+  type UserPayload {
+    userErrors: [UserError!]!
+    user: UserData
+  }
+
+  input UserInput {
+    name: String
+    email: String
+    password: String
+    profile: ProfileInput
+  }
+
+  input ProfileInput {
+    bio: String!
   }
 
   type Profile {
