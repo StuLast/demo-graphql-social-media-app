@@ -1,5 +1,5 @@
-import { Post, Prisma } from '@prisma/client';
-import { TContext } from '../index';
+import { Post } from '@prisma/client';
+import { TContext } from '../../index';
 
 interface TPostCreateArgs {
   input: {
@@ -158,10 +158,4 @@ const postDelete = async (
   return postPayload;
 };
 
-const Mutation = {
-  postCreate,
-  postUpdate,
-  postDelete,
-};
-
-export { Mutation };
+export const postResolvers = { postCreate, postUpdate, postDelete };
