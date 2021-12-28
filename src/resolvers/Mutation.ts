@@ -126,9 +126,42 @@ const postUpdate = async (
   return postPayload;
 };
 
+const postDelete = async (
+  _: any,
+  { id }: TPostUpdateArgs,
+  { prisma }: TContext
+): Promise<TPostPayload> => {
+  const postPayload: TPostPayload = {
+    userErrors: [],
+    post: null,
+  };
+
+  const isDeletable = await prisma.post.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+
+  if (!isDeletable) {
+    postPayload.userErrors.push({ message: 'Unable to locate post id' });
+    return postPayload;
+  }
+
+  const deletedPost = await prisma.post.delete({
+    where: {
+      id: Number(id),
+    },
+  });
+
+  postPayload.post = deletedPost;
+
+  return postPayload;
+};
+
 const Mutation = {
   postCreate,
   postUpdate,
+  postDelete,
 };
 
 export { Mutation };
