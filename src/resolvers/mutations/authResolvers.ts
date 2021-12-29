@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
-import { FieldsOnCorrectTypeRule } from 'graphql';
 import validator from 'validator';
+import bcrypt from 'bcryptjs';
 import { TContext } from '../../index';
 
 interface TSignUpArgs {
@@ -77,16 +77,18 @@ const signup = async (
     return userPayload;
   }
 
+  // Writing to DB
+  // =============
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   const newUser = await prisma.user.create({
     data: {
       email,
       name,
-      password, //TODO - Need to hash password
+      password: hashedPassword,
     },
   });
-
-  // Writing to DB
-  // =============
 
   await prisma.profile.create({
     data: {

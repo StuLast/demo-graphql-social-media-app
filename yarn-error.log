@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+  C:\Program Files\nodejs\node.exe C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add bcryptjs
 
 PATH: 
   C:\Users\stuar\bin;C:\Program Files\git\mingw64\bin;C:\Program Files\git\usr\local\bin;C:\Program Files\git\usr\bin;C:\Program Files\git\usr\bin;C:\Python39\Scripts;C:\Python39;C:\Program Files\Python39\Scripts;C:\Program Files\Python39;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ffmpeg\ffmpeg-20200831-4a11a6f-win64-static\bin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\program files\avid\s6;C:\program files (x86)\euphonix\eucon;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Calibre2;C:\Program Files\MATLAB\R2020a\bin;C:\Ruby26-x64\bin;C:\Users\stuar\AppData\Local\Microsoft\WindowsApps;C:\Users\stuar\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\stuar\AppData\Roaming\npm;C:\Program Files\heroku\bin;C:\Program Files\JetBrains\CLion 2020.2.4\bin;C:\Program Files\CMake\bin;C:\Program Files\dotnet;C:\Program Files\Common Files\Avid\Eucon;C:\Program Files (x86)\Common Files\Avid\Eucon;C:\Program Files (x86)\Avid\S6;C:\Program Files\Amazon\AWSCLIV2;C:\Program Files (x86)\Common Files\Acronis\VirtualFile;C:\Program Files (x86)\Common Files\Acronis\VirtualFile64;C:\Program Files (x86)\Common Files\Acronis\SnapAPI;C:\Program Files\Python\Python39;C:\Program Files\Python\Python39\Scripts;C:\Ruby\2-7-2\Ruby27-x64\bin;C:\Python27;C:\Python27\scripts;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\stuar\AppData\Local\GitHubDesktop\bin;C:\Users\stuar\.dotnet\tools;C:\Python27\Scripts;C:\Program Files\ngrok;C:\Program Files (x86)\mongosh\mongosh-1_1_2-win32-x64\bin;C:\Python;C:\Program Files\git\usr\bin\vendor_perl;C:\Program Files\git\usr\bin\core_perl;C:\Users\stuar\.rvm\bin
@@ -30,11 +30,13 @@ npm manifest:
     },
     "dependencies": {
       "@prisma/client": "3.7.0",
+      "@types/validator": "^13.7.1",
       "apollo-server": "^3.5.0",
       "dotenv-cli": "^4.1.1",
       "graphql": "^16.2.0",
       "prisma": "^3.7.0",
-      "uuid": "^8.3.2"
+      "uuid": "^8.3.2",
+      "validator": "^13.7.0"
     },
     "devDependencies": {
       "@types/node": "^17.0.5",
@@ -315,6 +317,11 @@ Lockfile:
     version "0.0.30"
     resolved "https://registry.npmjs.org/@types/strip-json-comments/-/strip-json-comments-0.0.30.tgz"
     integrity sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
+  
+  "@types/validator@^13.7.1":
+    version "13.7.1"
+    resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.7.1.tgz#cdab1b4779f6b1718a08de89d92d2603b71950cb"
+    integrity sha512-I6OUIZ5cYRk5lp14xSOAiXjWrfVoMZVjDuevBYgQDYzZIjsf2CAISpEcXOkFAtpAHbmWIDLcZObejqny/9xq5Q==
   
   abbrev@1:
     version "1.1.1"
@@ -1812,6 +1819,11 @@ Lockfile:
     version "8.3.2"
     resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
     integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+  
+  validator@^13.7.0:
+    version "13.7.0"
+    resolved "https://registry.yarnpkg.com/validator/-/validator-13.7.0.tgz#4f9658ba13ba8f3d82ee881d3516489ea85c0857"
+    integrity sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==
   
   value-or-promise@1.0.11:
     version "1.0.11"
