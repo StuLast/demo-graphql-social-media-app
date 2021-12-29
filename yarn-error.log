@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/validator
+  C:\Program Files\nodejs\node.exe C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
 
 PATH: 
   C:\Users\stuar\bin;C:\Program Files\git\mingw64\bin;C:\Program Files\git\usr\local\bin;C:\Program Files\git\usr\bin;C:\Program Files\git\usr\bin;C:\Python39\Scripts;C:\Python39;C:\Program Files\Python39\Scripts;C:\Program Files\Python39;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ffmpeg\ffmpeg-20200831-4a11a6f-win64-static\bin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\program files\avid\s6;C:\program files (x86)\euphonix\eucon;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Calibre2;C:\Program Files\MATLAB\R2020a\bin;C:\Ruby26-x64\bin;C:\Users\stuar\AppData\Local\Microsoft\WindowsApps;C:\Users\stuar\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\stuar\AppData\Roaming\npm;C:\Program Files\heroku\bin;C:\Program Files\JetBrains\CLion 2020.2.4\bin;C:\Program Files\CMake\bin;C:\Program Files\dotnet;C:\Program Files\Common Files\Avid\Eucon;C:\Program Files (x86)\Common Files\Avid\Eucon;C:\Program Files (x86)\Avid\S6;C:\Program Files\Amazon\AWSCLIV2;C:\Program Files (x86)\Common Files\Acronis\VirtualFile;C:\Program Files (x86)\Common Files\Acronis\VirtualFile64;C:\Program Files (x86)\Common Files\Acronis\SnapAPI;C:\Program Files\Python\Python39;C:\Program Files\Python\Python39\Scripts;C:\Ruby\2-7-2\Ruby27-x64\bin;C:\Python27;C:\Python27\scripts;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\stuar\AppData\Local\GitHubDesktop\bin;C:\Users\stuar\.dotnet\tools;C:\Python27\Scripts;C:\Program Files\ngrok;C:\Program Files (x86)\mongosh\mongosh-1_1_2-win32-x64\bin;C:\Python;C:\Program Files\git\usr\bin\vendor_perl;C:\Program Files\git\usr\bin\core_perl;C:\Users\stuar\.rvm\bin
@@ -25,7 +25,7 @@ npm manifest:
     "author": "Stu Last <stuart@spycedconcepts.uk>",
     "license": "ISC",
     "scripts": {
-      "dev": "dotenv -e .env.dev nodemon ./src/index.ts",
+      "dev": "dotenv -e .env nodemon ./src/index.ts",
       "build": "tsc ./src/index.ts"
     },
     "dependencies": {

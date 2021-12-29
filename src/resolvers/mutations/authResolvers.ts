@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import { FieldsOnCorrectTypeRule } from 'graphql';
 import validator from 'validator';
 import { TContext } from '../../index';
 
@@ -27,22 +28,48 @@ const signup = async (
 ): Promise<TUserPayload> => {
   const { email, name, profile, password } = input;
 
+  // Validation
+  // ==========
+
   const userPayload: TUserPayload = {
     userErrors: [],
     user: null,
   };
 
-  const isEmail = validator.isEmail(email);
+  const isValidEmail = validator.isEmail(email);
+  const isValidPassword = validator.isStrongPassword(password, {
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+  });
 
+  const hasBio = !!profile.bio;
+  const hasName = !!(name.length > 0);
   const emailExists = await prisma.user.findFirst({
     where: {
       email,
     },
   });
 
-  if (emailExists || !isEmail) {
-    !isEmail
+  if (emailExists || !isValidEmail || !isValidPassword) {
+    !isValidEmail
       ? userPayload.userErrors.push({ message: 'Email is not valid' })
+      : null;
+    !isValidPassword
+      ? userPayload.userErrors.push({
+          message:
+            'Password needs a mix of lower & upper case letters, numbers and symbol, and must be at least 8 characters long',
+        })
+      : null;
+    !hasBio
+      ? userPayload.userErrors.push({
+          message: 'profile.bio field is not valid',
+        })
+      : null;
+    !hasName
+      ? userPayload.userErrors.push({ message: 'Name is not valid' })
       : null;
     emailExists
       ? userPayload.userErrors.push({ message: 'Cannot use email' })
@@ -57,6 +84,9 @@ const signup = async (
       password, //TODO - Need to hash password
     },
   });
+
+  // Writing to DB
+  // =============
 
   await prisma.profile.create({
     data: {
