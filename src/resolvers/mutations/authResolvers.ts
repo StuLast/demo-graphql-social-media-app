@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import validator from 'validator';
 import { TContext } from '../../index';
 
 interface TSignUpArgs {
@@ -19,12 +20,19 @@ interface TUserPayload {
   user: User | null;
 }
 
-const signup = async (_: any, { input }: TSignUpArgs, { prisma }: TContext) => {
+const signup = async (
+  _: any,
+  { input }: TSignUpArgs,
+  { prisma }: TContext
+): Promise<TUserPayload> => {
   const { email, name, profile, password } = input;
+
   const userPayload: TUserPayload = {
     userErrors: [],
     user: null,
   };
+
+  const isEmail = validator.isEmail(email);
 
   const emailExists = await prisma.user.findFirst({
     where: {
@@ -32,8 +40,13 @@ const signup = async (_: any, { input }: TSignUpArgs, { prisma }: TContext) => {
     },
   });
 
-  if (emailExists) {
-    userPayload.userErrors.push({ message: 'Cannot use email' });
+  if (emailExists || !isEmail) {
+    !isEmail
+      ? userPayload.userErrors.push({ message: 'Email is not valid' })
+      : null;
+    emailExists
+      ? userPayload.userErrors.push({ message: 'Cannot use email' })
+      : null;
     return userPayload;
   }
 
@@ -45,7 +58,7 @@ const signup = async (_: any, { input }: TSignUpArgs, { prisma }: TContext) => {
     },
   });
 
-  const newProfile = await prisma.profile.create({
+  await prisma.profile.create({
     data: {
       userId: newUser.id,
       bio: profile.bio,
