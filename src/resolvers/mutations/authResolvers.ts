@@ -129,6 +129,8 @@ const signup = async (
     return userPayload;
   }
 
+  //Add to redis
+
   userPayload.token = token;
 
   return userPayload;
