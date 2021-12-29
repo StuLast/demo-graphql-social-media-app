@@ -1,6 +1,6 @@
-import { User } from '@prisma/client';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { TContext } from '../../index';
 
 interface TSignUpArgs {
@@ -18,7 +18,7 @@ interface TUserPayload {
   userErrors: {
     message: string;
   }[];
-  user: User | null;
+  token: string | null;
 }
 
 const signup = async (
@@ -33,7 +33,7 @@ const signup = async (
 
   const userPayload: TUserPayload = {
     userErrors: [],
-    user: null,
+    token: null,
   };
 
   const isValidEmail = validator.isEmail(email);
@@ -53,7 +53,9 @@ const signup = async (
     },
   });
 
-  if (emailExists || !isValidEmail || !isValidPassword) {
+  const signature = process.env.JWT_SIGNATURE;
+
+  if (emailExists || !isValidEmail || !isValidPassword || !signature) {
     !isValidEmail
       ? userPayload.userErrors.push({ message: 'Email is not valid' })
       : null;
@@ -70,6 +72,11 @@ const signup = async (
       : null;
     !hasName
       ? userPayload.userErrors.push({ message: 'Name is not valid' })
+      : null;
+    !signature
+      ? userPayload.userErrors.push({
+          message: 'Unable to generate token signature',
+        })
       : null;
     emailExists
       ? userPayload.userErrors.push({ message: 'Cannot use email' })
@@ -97,7 +104,15 @@ const signup = async (
     },
   });
 
-  userPayload.user = newUser;
+  userPayload.token = jwt.sign(
+    {
+      userId: newUser.id,
+    },
+    signature,
+    {
+      expiresIn: 5 * 25 * 60,
+    }
+  );
 
   return userPayload;
 };

@@ -47,7 +47,7 @@ const typeDefs = gql`
 
   type UserPayload {
     userErrors: [UserError!]!
-    user: UserData
+    token: String!
   }
 
   input UserInput {
