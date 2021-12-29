@@ -14,7 +14,14 @@ interface TSignUpArgs {
   };
 }
 
-interface TUserPayload {
+interface TSignInArgs {
+  input: {
+    email: string;
+    password: string;
+  };
+}
+
+interface TAuthPayload {
   userErrors: {
     message: string;
   }[];
@@ -25,13 +32,13 @@ const signup = async (
   _: any,
   { input }: TSignUpArgs,
   { prisma }: TContext
-): Promise<TUserPayload> => {
+): Promise<TAuthPayload> => {
   const { email, name, profile, password } = input;
 
   // Validation
   // ==========
 
-  const userPayload: TUserPayload = {
+  const userPayload: TAuthPayload = {
     userErrors: [],
     token: null,
   };
@@ -104,7 +111,10 @@ const signup = async (
     },
   });
 
-  userPayload.token = jwt.sign(
+  //Create valid response with token
+  //================================
+
+  const token = await jwt.sign(
     {
       userId: newUser.id,
     },
@@ -114,9 +124,80 @@ const signup = async (
     }
   );
 
+  if (!token) {
+    userPayload.userErrors.push({ message: 'Unable to generate token' });
+    return userPayload;
+  }
+
+  userPayload.token = token;
+
   return userPayload;
+};
+
+const signin = async (
+  _: any,
+  { input }: TSignUpArgs,
+  { prisma }: TContext
+): Promise<TAuthPayload> => {
+  const { email, password } = input;
+
+  const authPayload: TAuthPayload = {
+    userErrors: [],
+    token: null,
+  };
+
+  // check inputs are valid
+  // ======================
+  const isValidEmail = validator.isEmail(email);
+  const isValidPassword = !!password;
+  const isExistingUser = await prisma.user.findFirst({
+    where: {
+      email,
+    },
+  });
+
+  if (!isValidEmail || !isValidPassword || !isExistingUser) {
+    authPayload.userErrors.push({
+      message: 'Signin credentials not valid',
+    });
+    return authPayload;
+  }
+
+  //check if password matches
+
+  const hasCorrectPassword = bcrypt.compare(password, isExistingUser.password);
+  if (!hasCorrectPassword) {
+    authPayload.userErrors.push({
+      message: 'Signin credentials not valid',
+    });
+  }
+
+  const signature = process.env.JWT_SIGNATURE;
+  if (!signature) {
+    authPayload.userErrors.push({ message: 'Unable to generate token' });
+    return authPayload;
+  }
+
+  const token = await jwt.sign(
+    {
+      userId: isExistingUser.id,
+    },
+    signature,
+    {
+      expiresIn: 5 * 25 * 60,
+    }
+  );
+
+  if (!token) {
+    authPayload.userErrors.push({ message: 'Unable to generate token' });
+    return authPayload;
+  }
+
+  authPayload.token = token;
+  return authPayload;
 };
 
 export const authResolvers = {
   signup,
+  signin,
 };
