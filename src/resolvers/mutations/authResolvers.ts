@@ -120,7 +120,7 @@ const signup = async (
     },
     signature,
     {
-      expiresIn: 5 * 25 * 60,
+      expiresIn: process.env.TOKEN_EXPIRY,
     }
   );
 
@@ -129,6 +129,8 @@ const signup = async (
     return userPayload;
   }
 
+  //Add to redis
+
   userPayload.token = token;
 
   return userPayload;
@@ -136,7 +138,7 @@ const signup = async (
 
 const signin = async (
   _: any,
-  { input }: TSignUpArgs,
+  { input }: TSignInArgs,
   { prisma }: TContext
 ): Promise<TAuthPayload> => {
   const { email, password } = input;
@@ -184,7 +186,7 @@ const signin = async (
     },
     signature,
     {
-      expiresIn: 5 * 25 * 60,
+      expiresIn: process.env.TOKEN_EXPIRY,
     }
   );
 

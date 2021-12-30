@@ -26,7 +26,7 @@ interface TPostPayload {
 const postCreate = async (
   _: any,
   { input }: TPostCreateArgs,
-  { prisma }: TContext
+  { prisma, userInfo }: TContext
 ): Promise<TPostPayload> => {
   const { title, content } = input;
   const postPayload: TPostPayload = {
@@ -36,6 +36,26 @@ const postCreate = async (
 
   let hasContent = false;
   let hasTitle = false;
+
+  if (!userInfo || !userInfo.userId) {
+    postPayload.userErrors.push({
+      message: 'Invalid User Info',
+    });
+    return postPayload;
+  }
+
+  const validatedUser = await prisma.user.findUnique({
+    where: {
+      id: userInfo.userId,
+    },
+  });
+
+  if (!validatedUser) {
+    postPayload.userErrors.push({
+      message: 'Invalid User Info',
+    });
+    return postPayload;
+  }
 
   content.length > 0
     ? (hasContent = true)
@@ -49,9 +69,7 @@ const postCreate = async (
         message: 'Must contain a valid post title',
       });
 
-  //Implement user Id check to confirm user exists
-
-  if (!hasContent || !hasTitle) {
+  if (!hasContent || !hasTitle!) {
     return postPayload;
   }
 
@@ -60,7 +78,7 @@ const postCreate = async (
       data: {
         title,
         content,
-        authorId: 1,
+        authorId: validatedUser.id,
       },
     });
     postPayload.post = post;

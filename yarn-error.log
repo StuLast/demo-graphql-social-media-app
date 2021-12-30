@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/dotenv-cli
+  C:\Program Files\nodejs\node.exe C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add redis @types/redis
 
 PATH: 
   C:\Users\stuar\bin;C:\Program Files\git\mingw64\bin;C:\Program Files\git\usr\local\bin;C:\Program Files\git\usr\bin;C:\Program Files\git\usr\bin;C:\Python39\Scripts;C:\Python39;C:\Program Files\Python39\Scripts;C:\Program Files\Python39;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ffmpeg\ffmpeg-20200831-4a11a6f-win64-static\bin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\program files\avid\s6;C:\program files (x86)\euphonix\eucon;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Calibre2;C:\Program Files\MATLAB\R2020a\bin;C:\Ruby26-x64\bin;C:\Users\stuar\AppData\Local\Microsoft\WindowsApps;C:\Users\stuar\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\stuar\AppData\Roaming\npm;C:\Program Files\heroku\bin;C:\Program Files\JetBrains\CLion 2020.2.4\bin;C:\Program Files\CMake\bin;C:\Program Files\dotnet;C:\Program Files\Common Files\Avid\Eucon;C:\Program Files (x86)\Common Files\Avid\Eucon;C:\Program Files (x86)\Avid\S6;C:\Program Files\Amazon\AWSCLIV2;C:\Program Files (x86)\Common Files\Acronis\VirtualFile;C:\Program Files (x86)\Common Files\Acronis\VirtualFile64;C:\Program Files (x86)\Common Files\Acronis\SnapAPI;C:\Program Files\Python\Python39;C:\Program Files\Python\Python39\Scripts;C:\Ruby\2-7-2\Ruby27-x64\bin;C:\Python27;C:\Python27\scripts;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\stuar\AppData\Local\GitHubDesktop\bin;C:\Users\stuar\.dotnet\tools;C:\Python27\Scripts;C:\Program Files\ngrok;C:\Program Files (x86)\mongosh\mongosh-1_1_2-win32-x64\bin;C:\Python;C:\Program Files\git\usr\bin\vendor_perl;C:\Program Files\git\usr\bin\core_perl;C:\Users\stuar\.rvm\bin
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fdotenv-cli: Not found
-      at Request.params.callback [as _callback] (C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:67029:18)
-      at Request.self.callback (C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140883:22)
-      at Request.emit (node:events:390:28)
-      at Request.<anonymous> (C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141855:10)
-      at Request.emit (node:events:390:28)
-      at IncomingMessage.<anonymous> (C:\Users\stuar\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141777:12)
-      at Object.onceWrapper (node:events:509:28)
-      at IncomingMessage.emit (node:events:402:35)
-      at endReadableNT (node:internal/streams/readable:1343:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+  Error: EPERM: operation not permitted, unlink 'Z:\Udemy\Laith Harb\GraphQL\3-demo-graphql-social-media-app\node_modules\prisma\engines\8746e055198f517658c08a0c426c7eec87f5a85f\query_engine-windows.dll.node'
 
 npm manifest: 
   {
@@ -43,6 +33,7 @@ npm manifest:
       "@types/jsonwebtoken": "^8.5.6",
       "apollo-server": "^3.5.0",
       "bcryptjs": "^2.4.3",
+      "dotenv": "^10.0.0",
       "dotenv-cli": "^4.1.1",
       "graphql": "^16.2.0",
       "jsonwebtoken": "^8.5.1",
@@ -854,6 +845,11 @@ Lockfile:
     version "5.1.0"
     resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-5.1.0.tgz#3fbaf020bfd794884072ea26b1e9791d45a629f0"
     integrity sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==
+  
+  dotenv@^10.0.0:
+    version "10.0.0"
+    resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
+    integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
   
   dotenv@^8.1.0:
     version "8.6.0"
