@@ -1,1 +1,2 @@
-export * from './getUserFromToken'
+export * from './getUserFromToken';
+export * from './userCanMutatePost';
