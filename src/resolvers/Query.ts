@@ -26,6 +26,9 @@ const posts = async (
   { prisma }: TContext
 ): Promise<Post[]> => {
   const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
     orderBy: [
       {
         createdAt: 'desc',
