@@ -1,4 +1,5 @@
 import { TContext } from '../index';
+import { userLoader } from '../dataLoaders/userLoader';
 
 interface TPostParent {
   authorId: number;
@@ -9,11 +10,7 @@ const user = async (
   _: any,
   { prisma }: TContext
 ) => {
-  return await prisma.user.findUnique({
-    where: {
-      id: authorId,
-    },
-  });
+  return userLoader.load(authorId);
 };
 
 export const Post = {
