@@ -17,6 +17,11 @@ interface TPostUpdateArgs {
   };
 }
 
+interface TPostPublishArgs {
+  id: string;
+  publishStatus: boolean;
+}
+
 interface TPostPayload {
   userErrors: TUserErrors[];
   post: Post | null;
@@ -233,5 +238,54 @@ const postDelete = async (
   return postPayload;
 };
 
-export const postResolvers = { postCreate, postUpdate, postDelete };
+const postPublish = async (
+  _: any,
+  { id, publishStatus }: TPostPublishArgs,
+  { prisma, userInfo }: TContext
+): Promise<TPostPayload> => {
+  const postPayload: TPostPayload = {
+    userErrors: [],
+    post: null,
+  };
+
+  if (!userInfo || !userInfo.userId) {
+    postPayload.userErrors.push({
+      message: 'User Info not valid',
+    });
+    return postPayload;
+  }
+
+  const mutateError = await userCanMutatePost({
+    userId: userInfo.userId,
+    postId: Number(id),
+    prisma,
+  });
+
+  if (mutateError) {
+    postPayload.userErrors.push({
+      message: mutateError.message,
+    });
+    return postPayload;
+  }
+
+  const post = await prisma.post.update({
+    data: {
+      published: publishStatus,
+    },
+    where: {
+      id: Number(id),
+    },
+  });
+
+  postPayload.post = post;
+
+  return postPayload;
+};
+
+export const postResolvers = {
+  postCreate,
+  postUpdate,
+  postDelete,
+  postPublish,
+};
 export { TUserErrors };

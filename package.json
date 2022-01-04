@@ -6,7 +6,7 @@
   "author": "Stu Last <stuart@spycedconcepts.uk>",
   "license": "ISC",
   "scripts": {
-    "dev": "dotenv -e .env nodemon ./src/index.ts",
+    "dev": "nodemon ./src/index.ts",
     "build": "tsc ./src/index.ts"
   },
   "dependencies": {
