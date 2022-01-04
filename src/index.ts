@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server';
 import dotenv from 'dotenv';
 import { PrismaClient, Prisma } from '@prisma/client';
 import typeDefs from './schema';
-import { Query, Mutation } from './resolvers';
+import { Query, Mutation, Profile, Post, User } from './resolvers';
 import { getUserFromToken } from './utils';
 
 dotenv.config();
@@ -20,7 +20,7 @@ export interface TContext {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers: { Query, Mutation },
+  resolvers: { Query, Mutation, Profile, Post, User },
   context: async ({ req }: any): Promise<TContext> => {
     const userInfo: { userId: number } | null = await getUserFromToken(
       req.headers.authorization
@@ -32,6 +32,8 @@ const server = new ApolloServer({
   },
 });
 
-server.listen().then(({ url }) => {
+const PORT = process.env.PORT || 4000;
+
+server.listen(PORT).then(({ url }) => {
   console.log(`Server ready at ${url}`);
 });

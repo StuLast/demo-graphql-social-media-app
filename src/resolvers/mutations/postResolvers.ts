@@ -1,5 +1,6 @@
 import { Post } from '@prisma/client';
 import { TContext } from '../../index';
+import { userCanMutatePost } from '../../utils';
 
 interface TPostCreateArgs {
   input: {
@@ -16,11 +17,18 @@ interface TPostUpdateArgs {
   };
 }
 
+interface TPostPublishArgs {
+  id: string;
+  publishStatus: boolean;
+}
+
 interface TPostPayload {
-  userErrors: {
-    message: string;
-  }[];
+  userErrors: TUserErrors[];
   post: Post | null;
+}
+
+interface TUserErrors {
+  message: string;
 }
 
 const postCreate = async (
@@ -91,7 +99,7 @@ const postCreate = async (
 const postUpdate = async (
   _: any,
   { id, input }: TPostUpdateArgs,
-  { prisma }: TContext
+  { prisma, userInfo }: TContext
 ): Promise<TPostPayload> => {
   const { title, content } = input;
 
@@ -99,6 +107,33 @@ const postUpdate = async (
     userErrors: [],
     post: null,
   };
+
+  if (!userInfo || !userInfo.userId) {
+    postPayload.userErrors.push({
+      message: 'User Info not valid',
+    });
+    return postPayload;
+  }
+
+  if (!id) {
+    postPayload.userErrors.push({
+      message: 'Post ID not valid',
+    });
+    return postPayload;
+  }
+
+  const mutateError = await userCanMutatePost({
+    userId: userInfo.userId,
+    postId: Number(id),
+    prisma,
+  });
+
+  if (mutateError) {
+    postPayload.userErrors.push({
+      message: mutateError.message,
+    });
+    return postPayload;
+  }
 
   if (!title && !content) {
     postPayload.userErrors.push({
@@ -147,12 +182,39 @@ const postUpdate = async (
 const postDelete = async (
   _: any,
   { id }: TPostUpdateArgs,
-  { prisma }: TContext
+  { prisma, userInfo }: TContext
 ): Promise<TPostPayload> => {
   const postPayload: TPostPayload = {
     userErrors: [],
     post: null,
   };
+
+  if (!userInfo || !userInfo.userId) {
+    postPayload.userErrors.push({
+      message: 'User Info not valid',
+    });
+    return postPayload;
+  }
+
+  if (!id) {
+    postPayload.userErrors.push({
+      message: 'Post ID not valid',
+    });
+    return postPayload;
+  }
+
+  const mutateError = await userCanMutatePost({
+    userId: userInfo.userId,
+    postId: Number(id),
+    prisma,
+  });
+
+  if (mutateError) {
+    postPayload.userErrors.push({
+      message: mutateError.message,
+    });
+    return postPayload;
+  }
 
   const isDeletable = await prisma.post.findUnique({
     where: {
@@ -176,4 +238,54 @@ const postDelete = async (
   return postPayload;
 };
 
-export const postResolvers = { postCreate, postUpdate, postDelete };
+const postPublish = async (
+  _: any,
+  { id, publishStatus }: TPostPublishArgs,
+  { prisma, userInfo }: TContext
+): Promise<TPostPayload> => {
+  const postPayload: TPostPayload = {
+    userErrors: [],
+    post: null,
+  };
+
+  if (!userInfo || !userInfo.userId) {
+    postPayload.userErrors.push({
+      message: 'User Info not valid',
+    });
+    return postPayload;
+  }
+
+  const mutateError = await userCanMutatePost({
+    userId: userInfo.userId,
+    postId: Number(id),
+    prisma,
+  });
+
+  if (mutateError) {
+    postPayload.userErrors.push({
+      message: mutateError.message,
+    });
+    return postPayload;
+  }
+
+  const post = await prisma.post.update({
+    data: {
+      published: publishStatus,
+    },
+    where: {
+      id: Number(id),
+    },
+  });
+
+  postPayload.post = post;
+
+  return postPayload;
+};
+
+export const postResolvers = {
+  postCreate,
+  postUpdate,
+  postDelete,
+  postPublish,
+};
+export { TUserErrors };
